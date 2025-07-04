@@ -29,4 +29,6 @@ import Card from "@/components/card.vue";
 import EnjoyApp from "@/components/enjoy_app.vue";
 import Partner from "~/components/partner.vue";
 import Langue from "~/components/langue.vue";
+import Search from "@/components/banner/search.vue";
+import TrandingCard from "@/components/tranding_card.vue";
 </script>

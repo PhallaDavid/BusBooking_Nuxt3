@@ -4,12 +4,27 @@
     <div class="bg-white shadow-sm border-b">
       <div class="max-w-4xl mx-auto px-4 py-4">
         <div class="flex items-center gap-3">
-          <button @click="goBack" class="p-1 rounded-full hover:bg-gray-100 transition">
-            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          <button
+            @click="goBack"
+            class="p-1 rounded-full hover:bg-gray-100 transition"
+          >
+            <svg
+              class="w-6 h-6 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
-          <h1 class="text-xl font-bold text-gray-800">Passenger Details</h1>
+          <h1 class="text-xl font-bold text-gray-800">
+            {{ t("Passenger Details", "ព័ត៌មានអ្នកចត់") }}
+          </h1>
         </div>
       </div>
     </div>
@@ -18,16 +33,22 @@
     <div class="max-w-4xl mx-auto p-4">
       <!-- Booking Summary -->
       <div class="bg-white rounded-lg shadow-sm mb-6 p-6">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Booking Summary</h2>
-        
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">
+          {{ t("Booking Summary", "របាយការកក់") }}
+        </h2>
+
         <!-- One Way Booking -->
         <div v-if="!isRoundTrip" class="space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span class="font-medium">{{ bookingData.fromLabel }} → {{ bookingData.toLabel }}</span>
+              <span class="font-medium"
+                >{{ bookingData.fromLabel }} → {{ bookingData.toLabel }}</span
+              >
             </div>
-            <span class="text-sm text-gray-600">{{ bookingData.departureDate }}</span>
+            <span class="text-sm text-gray-600">{{
+              bookingData.departureDate
+            }}</span>
           </div>
           <div class="ml-6 text-sm text-gray-600">
             <p>Seats: {{ bookingData.seats }}</p>
@@ -36,16 +57,23 @@
         </div>
 
         <!-- Round Trip Booking -->
-        <div v-else class="space-y-4 ">
+        <div v-else class="space-y-4">
           <!-- Outbound -->
-          <div class="space-y-2 ">
+          <div class="space-y-2">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span class="font-medium">{{ bookingData.fromLabel }} → {{ bookingData.toLabel }}</span>
-                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Outbound</span>
+                <span class="font-medium"
+                  >{{ bookingData.fromLabel }} → {{ bookingData.toLabel }}</span
+                >
+                <span
+                  class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded"
+                  >Outbound</span
+                >
               </div>
-              <span class="text-sm text-gray-600">{{ bookingData.departureDate }}</span>
+              <span class="text-sm text-gray-600">{{
+                bookingData.departureDate
+              }}</span>
             </div>
             <div class="ml-6 text-sm text-gray-600">
               <p>Seats: {{ bookingData.outboundSeats }}</p>
@@ -58,10 +86,17 @@
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span class="font-medium">{{ bookingData.toLabel }} → {{ bookingData.fromLabel }}</span>
-                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">Return</span>
+                <span class="font-medium"
+                  >{{ bookingData.toLabel }} → {{ bookingData.fromLabel }}</span
+                >
+                <span
+                  class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded"
+                  >Return</span
+                >
               </div>
-              <span class="text-sm text-gray-600">{{ bookingData.returnDate }}</span>
+              <span class="text-sm text-gray-600">{{
+                bookingData.returnDate
+              }}</span>
             </div>
             <div class="ml-6 text-sm text-gray-600">
               <p>Seats: {{ bookingData.returnSeats }}</p>
@@ -72,15 +107,23 @@
       </div>
 
       <!-- Passenger Details Form -->
-      <div class="bg-white  rounded-lg shadow-sm mb-6">
+      <div class="bg-white rounded-lg shadow-sm mb-6">
         <div class="p-6">
           <!-- Passenger Forms -->
-          <div v-for="(passenger, index) in passengers" :key="index" class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Passenger {{ index + 1 }}</h3>
-            
+          <div
+            v-for="(passenger, index) in passengers"
+            :key="index"
+            class="mb-8"
+          >
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+              {{ t("Passenger", "អ្នកចត់") }} {{ index + 1 }}
+            </h3>
+
             <!-- Name -->
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{
+                t("Name", "ឈ្មោះ")
+              }}</label>
               <input
                 v-model="passenger.name"
                 type="text"
@@ -92,7 +135,9 @@
 
             <!-- Nationality -->
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nationality</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{
+                t("Nationality", "សញ្ជាត់")
+              }}</label>
               <select
                 v-model="passenger.nationality"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
@@ -116,7 +161,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <!-- Gender -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{
+                  t("Gender", "ភាសា")
+                }}</label>
                 <div class="flex gap-4">
                   <label class="flex items-center">
                     <input
@@ -125,7 +172,9 @@
                       value="Female"
                       class="w-4 h-4 text-red-500 border-gray-300 focus:ring-red-500"
                     />
-                    <span class="ml-2 text-sm text-gray-700">Female</span>
+                    <span class="ml-2 text-sm text-gray-700">{{
+                      t("Female", "ស្រី")
+                    }}</span>
                   </label>
                   <label class="flex items-center">
                     <input
@@ -134,14 +183,18 @@
                       value="Male"
                       class="w-4 h-4 text-red-500 border-gray-300 focus:ring-red-500"
                     />
-                    <span class="ml-2 text-sm text-gray-700">Male</span>
+                    <span class="ml-2 text-sm text-gray-700">{{
+                      t("Male", "ប្រុស")
+                    }}</span>
                   </label>
                 </div>
               </div>
 
               <!-- Age -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{
+                  t("Age", "អាយ")
+                }}</label>
                 <input
                   v-model="passenger.age"
                   type="number"
@@ -158,20 +211,35 @@
           <!-- Contact Details Section -->
           <div class="border-t pt-6">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-semibold text-sm">
+              <div
+                class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-semibold text-sm"
+              >
                 2
               </div>
-              <h3 class="text-lg font-semibold text-gray-800">Contact Details</h3>
+              <h3 class="text-lg font-semibold text-gray-800">
+                {{ t("Contact Details", "ព័ត៌មានទូទាំង") }}
+              </h3>
             </div>
 
             <!-- Ticket Notice -->
-            <div class="bg-yellow-100 border border-yellow-300 rounded-md p-3 mb-4">
-              <p class="text-sm text-yellow-800">Your ticket will be sent to these details</p>
+            <div
+              class="bg-yellow-100 border border-yellow-300 rounded-md p-3 mb-4"
+            >
+              <p class="text-sm text-yellow-800">
+                {{
+                  t(
+                    "Your ticket will be sent to these details",
+                    "បានកក់បានបញ្ជាក់រួចទូទាំងនេះ"
+                  )
+                }}
+              </p>
             </div>
 
             <!-- Email -->
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Email ID</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{
+                t("Email ID", "អត្តលេខ")
+              }}</label>
               <input
                 v-model="contactDetails.email"
                 type="email"
@@ -183,7 +251,9 @@
 
             <!-- Phone -->
             <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{
+                t("Phone", "លេខទូទាំង")
+              }}</label>
               <div class="flex">
                 <select
                   v-model="contactDetails.countryCode"
@@ -227,9 +297,19 @@
               required
             />
             <span>
-              By clicking on proceed, I agree that I have read and understood the 
-              <a href="#" class="text-red-500 hover:underline">T&Cs</a> and the 
-              <a href="#" class="text-red-500 hover:underline">Privacy Policy</a>
+              {{
+                t(
+                  "By clicking on proceed, I agree that I have read and understood the",
+                  "បន្ទាប់បញ្ជាក់ខ្ញុំអត់បានអាននិងបានអានច្បាស់នេះ"
+                )
+              }}
+              <a href="#" class="text-red-500 hover:underline">{{
+                t("T&Cs", "សម្គាល់និងលម្អិត")
+              }}</a>
+              {{ t("and the", "និង") }}
+              <a href="#" class="text-red-500 hover:underline">{{
+                t("Privacy Policy", "លម្អិត")
+              }}</a>
             </span>
           </label>
         </div>
@@ -237,14 +317,15 @@
         <!-- Total and Proceed Button -->
         <div class="flex items-center justify-between">
           <div class="text-lg font-semibold text-gray-800">
-            Total Amount: <span class="text-xl">USD {{ totalAmount }}</span>
+            {{ t("Total Amount", "សរុបចំនាំ") }}:
+            <span class="text-xl">USD {{ totalAmount }}</span>
           </div>
           <button
             @click="proceedToPay"
             :disabled="!canProceed"
             class="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 px-8 rounded-lg transition-colors"
           >
-            PROCEED TO PAY
+            {{ t("PROCEED TO PAY", "បន្ទាប់ទៅកក់") }}
           </button>
         </div>
       </div>
@@ -253,93 +334,103 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { t, language } from "@/plugins/translate";
 
-const router = useRouter()
-const route = useRoute()
+const router = useRouter();
+const route = useRoute();
 
 // Booking data from URL parameters
-const bookingData = ref({})
-const isRoundTrip = computed(() => bookingData.value.grandTotal !== undefined)
+const bookingData = ref({});
+const isRoundTrip = computed(() => bookingData.value.grandTotal !== undefined);
 
 // Form data
-const passengers = ref([])
+const passengers = ref([]);
 const contactDetails = ref({
-  email: '',
-  countryCode: '+855',
-  phone: ''
-})
-const agreedToTerms = ref(false)
+  email: "",
+  countryCode: "+855",
+  phone: "",
+});
+const agreedToTerms = ref(false);
 
 // Computed properties
 const totalAmount = computed(() => {
-  return isRoundTrip.value ? bookingData.value.grandTotal : bookingData.value.totalAmount
-})
+  return isRoundTrip.value
+    ? bookingData.value.grandTotal
+    : bookingData.value.totalAmount;
+});
 
 const totalSeats = computed(() => {
   if (isRoundTrip.value) {
-    const outboundSeats = bookingData.value.outboundSeats ? bookingData.value.outboundSeats.split(',').length : 0
-    const returnSeats = bookingData.value.returnSeats ? bookingData.value.returnSeats.split(',').length : 0
-    return Math.max(outboundSeats, returnSeats) // Use the maximum number of seats
+    const outboundSeats = bookingData.value.outboundSeats
+      ? bookingData.value.outboundSeats.split(",").length
+      : 0;
+    const returnSeats = bookingData.value.returnSeats
+      ? bookingData.value.returnSeats.split(",").length
+      : 0;
+    return Math.max(outboundSeats, returnSeats); // Use the maximum number of seats
   } else {
-    return bookingData.value.seats ? bookingData.value.seats.split(',').length : 1
+    return bookingData.value.seats
+      ? bookingData.value.seats.split(",").length
+      : 1;
   }
-})
+});
 
 const canProceed = computed(() => {
-  const allPassengersValid = passengers.value.every(p => 
-    p.name.trim() && p.nationality && p.gender && p.age
-  )
-  const contactValid = contactDetails.value.email.trim() && contactDetails.value.phone.trim()
-  return allPassengersValid && contactValid && agreedToTerms.value
-})
+  const allPassengersValid = passengers.value.every(
+    (p) => p.name.trim() && p.nationality && p.gender && p.age
+  );
+  const contactValid =
+    contactDetails.value.email.trim() && contactDetails.value.phone.trim();
+  return allPassengersValid && contactValid && agreedToTerms.value;
+});
 
 // Methods
 const goBack = () => {
-  router.back()
-}
+  router.back();
+};
 
 const initializePassengers = () => {
   passengers.value = Array.from({ length: totalSeats.value }, () => ({
-    name: '',
-    nationality: 'Cambodian',
-    gender: 'Female',
-    age: ''
-  }))
-}
+    name: "",
+    nationality: "Cambodian",
+    gender: "Female",
+    age: "",
+  }));
+};
 
 const proceedToPay = () => {
-  if (!canProceed.value) return
+  if (!canProceed.value) return;
 
   // Navigate to payment page with all booking and passenger data
   const paymentData = {
     ...bookingData.value,
     passengers: JSON.stringify(passengers.value),
     contactDetails: JSON.stringify(contactDetails.value),
-    totalAmount: totalAmount.value
-  }
+    totalAmount: totalAmount.value,
+  };
 
   router.push({
-    path: '/payment',
-    query: paymentData
-  })
-}
+    path: "/payment",
+    query: paymentData,
+  });
+};
 
 onMounted(() => {
   // Get booking data from URL parameters
-  bookingData.value = { ...route.query }
+  bookingData.value = { ...route.query };
 
-  initializePassengers()
-  
+  initializePassengers();
+
   // Pre-fill demo data (remove in production)
   if (passengers.value.length > 0) {
-    passengers.value[0].name = 'ewe'
-    passengers.value[0].age = '12'
+    passengers.value[0].name = "ewe";
+    passengers.value[0].age = "12";
   }
-  contactDetails.value.email = 'admin@gmail.com'
-  contactDetails.value.phone = '0972076423'
-})
+  contactDetails.value.email = "admin@gmail.com";
+  contactDetails.value.phone = "0972076423";
+});
 </script>
 
 <style scoped>
