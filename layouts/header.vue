@@ -42,7 +42,7 @@
           class="flex items-center hover:bg-gray-100 px-1 sm:px-2 lg:px-3 rounded-lg py-1 sm:py-2 gap-1 sm:gap-2 text-gray-700 hover:text-gray-900 transition-colors"
         >
           <svg
-            class="w-4 h-4 sm:w-5 sm:h-5"
+            class="w-4 h-4 text-blue-500 sm:w-5 sm:h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -122,90 +122,27 @@
             </div>
           </transition>
         </div>
-
-        <!-- Currency Selector -->
-        <div class="relative">
-          <button
-            @click="toggleCurrencyDropdown"
-            class="flex items-center hover:bg-gray-100 px-1 sm:px-2 lg:px-3 py-1 sm:py-2 rounded-lg gap-1 sm:gap-2 text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            <svg
-              class="w-4 h-4 sm:w-5 sm:h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-              />
-            </svg>
-            <span class="font-medium text-xs sm:text-sm lg:text-base">{{
-              currencyLabel(selectedCurrency.value)
-            }}</span>
-            <svg
-              class="w-3 h-3 lg:w-4 lg:h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-
-          <transition name="fade">
-            <div
-              v-if="showCurrencyDropdown"
-              class="absolute right-0 mt-2 w-24 bg-white shadow-lg rounded-lg z-50 border border-gray-200"
-            >
-              <ul class="py-1">
-                <li>
-                  <button
-                    @click="selectCurrency('USD')"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    USD
-                  </button>
-                </li>
-                <li>
-                  <button
-                    @click="selectCurrency('KHR')"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    KHR
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </transition>
-        </div>
-
-        <!-- Account -->
         <div class="relative">
           <button
             @click="toggleAccountDropdown"
             class="flex items-center hover:bg-gray-100 px-1 sm:px-2 lg:px-3 py-1 sm:py-2 rounded-lg gap-1 sm:gap-2 text-gray-700 hover:text-gray-900 transition-colors"
           >
             <svg
-              class="w-4 h-4 sm:w-5 sm:h-5"
-              fill="none"
-              stroke="currentColor"
+              class="w-6 h-6 text-blue-500"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
               viewBox="0 0 24 24"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                fill-rule="evenodd"
+                d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z"
+                clip-rule="evenodd"
               />
             </svg>
+
             <span class="font-medium text-xs sm:text-sm lg:text-base">{{
               t("Account", "គណនី")
             }}</span>
@@ -528,7 +465,7 @@ const selectedCurrency = ref("USD");
 const router = useRouter();
 
 // Auth state
-const isLoggedIn = computed(() => !!localStorage.getItem("access_token"));
+const isLoggedIn = computed(() => !!localStorage.getItem("auth_token"));
 
 const loginLabel = computed(() => {
   if (language.value === "kh") return "ចូលរួម";
@@ -537,8 +474,8 @@ const loginLabel = computed(() => {
 });
 
 function logout() {
-  localStorage.removeItem("access_token");
-  // Optionally remove user info if stored
+  localStorage.removeItem("auth_token");
+  localStorage.removeItem("user");
   router.push("/signin");
 }
 

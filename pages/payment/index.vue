@@ -844,14 +844,22 @@ const getDiscount = () => {
 
 // Payment processing
 const processPayment = () => {
-  if (!selectedPaymentMethod.value) return;
+  console.log("💳 processPayment called");
+  console.log("💳 Selected payment method:", selectedPaymentMethod.value);
+
+  if (!selectedPaymentMethod.value) {
+    console.log("❌ No payment method selected");
+    return;
+  }
 
   if (selectedPaymentMethod.value === "card") {
+    console.log("💳 Opening card payment modal");
     showCardModal.value = true;
   } else if (
     selectedPaymentMethod.value === "aba" ||
     selectedPaymentMethod.value === "ACLEDA "
   ) {
+    console.log("💳 Opening QR payment modal");
     showQRModal.value = true;
   }
 };
@@ -877,6 +885,12 @@ const formatExpiry = (event) => {
 };
 
 const submitCardPayment = async () => {
+  console.log("💳 submitCardPayment called");
+  console.log("💳 Card details:", cardDetails.value);
+  console.log("💳 Booking data:", bookingData.value);
+  console.log("💳 Passengers:", passengers.value);
+  console.log("💳 Contact details:", contactDetails.value);
+
   processing.value = true;
   bookingError.value = "";
 
@@ -901,40 +915,128 @@ const submitCardPayment = async () => {
     discount_code: offerCode.value || undefined,
     payment_method: selectedPaymentMethod.value,
   };
-  console.log("[DEBUG] Booking payload:", payload);
+  console.log("💳 Booking payload:", payload);
 
   const token = localStorage.getItem("access_token");
+  const authToken = localStorage.getItem("auth_token");
+
+  console.log(
+    "💳 Auth token (access_token):",
+    token ? "Present" : "Not present"
+  );
+  console.log(
+    "💳 Auth token (auth_token):",
+    authToken ? "Present" : "Not present"
+  );
+  console.log("💳 Token value:", token || authToken);
+
+  if (!token && !authToken) {
+    console.log("❌ No authentication token found");
+    bookingError.value = "Please log in to make a booking.";
+    processing.value = false;
+    return;
+  }
+
+  // Prepare headers
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+  };
+
+  // Use the available token
+  const authTokenToUse = token || authToken;
+  if (authTokenToUse) {
+    headers.Authorization = "Bearer " + authTokenToUse;
+  }
+
+  console.log("💳 Request headers:", headers);
+
   try {
+    console.log("💳 Making API call to:", "http://localhost:8000/api/bookings");
+    console.log("💳 Request method: POST");
+    console.log("💳 Request body:", JSON.stringify(payload, null, 2));
+
     const res = await fetch("http://localhost:8000/api/bookings", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: "Bearer " + token } : {}),
-      },
+      headers: headers,
       body: JSON.stringify(payload),
     });
-    const data = await res.json();
-    console.log("[DEBUG] Booking API response:", data);
+
+    console.log("💳 Response status:", res.status);
+    console.log(
+      "💳 Response headers:",
+      Object.fromEntries(res.headers.entries())
+    );
+
+    // Check if response is JSON
+    const contentType = res.headers.get("content-type");
+    console.log("💳 Response content-type:", contentType);
+
+    // Try to parse as JSON first, regardless of content-type
+    let data;
+    try {
+      const textResponse = await res.text();
+      console.log("💳 Raw response:", textResponse.substring(0, 500) + "...");
+
+      // Try to parse as JSON
+      data = JSON.parse(textResponse);
+      console.log("💳 Successfully parsed JSON response:", data);
+    } catch (parseError) {
+      console.log("❌ Failed to parse JSON:", parseError);
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error(
+          `Server returned HTML instead of JSON. Status: ${res.status}. Check if the API endpoint exists.`
+        );
+      } else {
+        throw new Error(`Failed to parse JSON response: ${parseError.message}`);
+      }
+    }
+
+    console.log("💳 Booking API response:", data);
+    console.log("💳 Response ok:", res.ok);
+
+    // Check for authentication error
+    if (data.message === "Unauthenticated.") {
+      console.log("❌ Authentication failed - user not logged in");
+      bookingError.value =
+        "Please log in to make a booking. Your session may have expired.";
+      return;
+    }
+
     if (
       res.ok &&
       data &&
       (data.booking_reference ||
         data.id ||
         data.message === "Booking successful" ||
-        (data.booking && data.booking.id))
+        (data.booking && data.booking.id) ||
+        (data.booking && data.ticket))
     ) {
+      console.log("💳 Booking successful");
       bookingReference.value =
         data.booking_reference ||
         data.id ||
         (data.booking && data.booking.id) ||
+        (data.ticket && data.ticket.ticket_number) ||
         "";
+      console.log("💳 Booking reference:", bookingReference.value);
       showCardModal.value = false;
       showSuccessModal.value = true;
       setTimeout(goToBookingConfirmation, 2000);
     } else {
+      console.log(
+        "❌ Booking failed - response not ok or no booking reference"
+      );
       throw new Error(data.message || "Booking failed");
     }
   } catch (e) {
+    console.error("❌ Booking error:", e);
+    console.error("❌ Error details:", {
+      message: e.message,
+      stack: e.stack,
+      name: e.name,
+    });
     bookingError.value = e.message || "Booking failed. Please try again.";
     showCardModal.value = false;
     showSuccessModal.value = false;
@@ -944,6 +1046,7 @@ const submitCardPayment = async () => {
 };
 
 const confirmQRPayment = async () => {
+  console.log("💳 confirmQRPayment called");
   showQRModal.value = false;
   processing.value = true;
   bookingError.value = "";
@@ -966,39 +1069,133 @@ const confirmQRPayment = async () => {
     discount_code: offerCode.value || undefined,
     payment_method: selectedPaymentMethod.value,
   };
-  console.log("[DEBUG] Booking payload:", payload);
+  console.log("💳 QR Booking payload:", payload);
 
+  // Check authentication token
   const token = localStorage.getItem("access_token");
+  const authToken = localStorage.getItem("auth_token");
+
+  console.log(
+    "💳 QR Auth token (access_token):",
+    token ? "Present" : "Not present"
+  );
+  console.log(
+    "💳 QR Auth token (auth_token):",
+    authToken ? "Present" : "Not present"
+  );
+  console.log("💳 QR Token value:", token || authToken);
+
+  if (!token && !authToken) {
+    console.log("❌ QR No authentication token found");
+    bookingError.value = "Please log in to make a booking.";
+    processing.value = false;
+    return;
+  }
+
+  // Prepare headers
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+  };
+
+  // Use the available token
+  const authTokenToUse = token || authToken;
+  if (authTokenToUse) {
+    headers.Authorization = "Bearer " + authTokenToUse;
+  }
+
+  console.log("💳 QR Request headers:", headers);
+
   try {
+    console.log(
+      "💳 Making QR API call to:",
+      "http://localhost:8000/api/bookings"
+    );
+    console.log("💳 Request method: POST");
+    console.log("💳 Request body:", JSON.stringify(payload, null, 2));
+
     const res = await fetch("http://localhost:8000/api/bookings", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: "Bearer " + token } : {}),
-      },
+      headers: headers,
       body: JSON.stringify(payload),
     });
-    const data = await res.json();
-    console.log("[DEBUG] Booking API response:", data);
+
+    console.log("💳 QR Response status:", res.status);
+    console.log(
+      "💳 QR Response headers:",
+      Object.fromEntries(res.headers.entries())
+    );
+
+    // Check if response is JSON
+    const contentType = res.headers.get("content-type");
+    console.log("💳 QR Response content-type:", contentType);
+
+    // Try to parse as JSON first, regardless of content-type
+    let data;
+    try {
+      const textResponse = await res.text();
+      console.log(
+        "💳 QR Raw response:",
+        textResponse.substring(0, 500) + "..."
+      );
+
+      // Try to parse as JSON
+      data = JSON.parse(textResponse);
+      console.log("💳 QR Successfully parsed JSON response:", data);
+    } catch (parseError) {
+      console.log("❌ QR Failed to parse JSON:", parseError);
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error(
+          `Server returned HTML instead of JSON. Status: ${res.status}. This might be a CORS issue or authentication problem. Check your Laravel backend configuration.`
+        );
+      } else {
+        throw new Error(`Failed to parse JSON response: ${parseError.message}`);
+      }
+    }
+
+    console.log("💳 QR Booking API response:", data);
+
+    // Check for authentication error
+    if (data.message === "Unauthenticated.") {
+      console.log("❌ QR Authentication failed - user not logged in");
+      bookingError.value =
+        "Please log in to make a booking. Your session may have expired.";
+      return;
+    }
+
     if (
       res.ok &&
       data &&
       (data.booking_reference ||
         data.id ||
         data.message === "Booking successful" ||
-        (data.booking && data.booking.id))
+        (data.booking && data.booking.id) ||
+        (data.booking && data.ticket))
     ) {
+      console.log("💳 QR Booking successful");
       bookingReference.value =
         data.booking_reference ||
         data.id ||
         (data.booking && data.booking.id) ||
+        (data.ticket && data.ticket.ticket_number) ||
         "";
+      console.log("💳 QR Booking reference:", bookingReference.value);
       showSuccessModal.value = true;
       setTimeout(goToBookingConfirmation, 2000); // Auto-redirect after 2 seconds
     } else {
+      console.log(
+        "❌ QR Booking failed - response not ok or no booking reference"
+      );
       throw new Error(data.message || "Booking failed");
     }
   } catch (e) {
+    console.error("❌ QR Booking error:", e);
+    console.error("❌ QR Error details:", {
+      message: e.message,
+      stack: e.stack,
+      name: e.name,
+    });
     bookingError.value = e.message || "Booking failed. Please try again.";
     showSuccessModal.value = false;
   } finally {
@@ -1007,28 +1204,229 @@ const confirmQRPayment = async () => {
 };
 
 const goToBookingConfirmation = () => {
-  router.push({
-    path: "/accounts/my_ticket",
-    query: {
-      ...bookingData.value,
-      paymentMethod: selectedPaymentMethod.value,
-      bookingReference: bookingReference.value,
-      offerCode: offerCode.value,
+  console.log("💳 goToBookingConfirmation called");
+  console.log("💳 Booking reference:", bookingReference.value);
+  console.log("💳 Payment method:", selectedPaymentMethod.value);
+
+  const queryData = {
+    ...bookingData.value,
+    paymentMethod: selectedPaymentMethod.value,
+    bookingReference: bookingReference.value,
+    offerCode: offerCode.value,
+  };
+
+  console.log("💳 Navigation query data:", queryData);
+
+  try {
+    router.push({
+      path: "/accounts/my_ticket",
+      query: queryData,
+    });
+    console.log("💳 Navigation to my_ticket initiated");
+  } catch (error) {
+    console.error("❌ Error navigating to my_ticket:", error);
+    alert("Error navigating to ticket page: " + error.message);
+  }
+};
+
+const testAPIEndpoint = async () => {
+  console.log("🧪 Testing API endpoint...");
+
+  try {
+    // Test GET request to check if endpoint exists
+    const res = await fetch("http://localhost:8000/api/bookings", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("🧪 API test response status:", res.status);
+    console.log(
+      "🧪 API test response headers:",
+      Object.fromEntries(res.headers.entries())
+    );
+
+    const contentType = res.headers.get("content-type");
+    console.log("🧪 API test content-type:", contentType);
+
+    if (res.status === 404) {
+      console.log("❌ API endpoint does not exist (404)");
+      alert(
+        "API endpoint /api/bookings does not exist. Please check your backend."
+      );
+    } else if (res.status === 405) {
+      console.log("✅ API endpoint exists but GET method not allowed (405)");
+      console.log("✅ This is expected - POST method should work");
+    } else if (!contentType || !contentType.includes("application/json")) {
+      const textResponse = await res.text();
+      console.log("❌ API returned HTML:", textResponse.substring(0, 200));
+      alert(
+        "API endpoint returned HTML instead of JSON. Check your backend configuration."
+      );
+    } else {
+      console.log("✅ API endpoint exists and returns JSON");
+    }
+  } catch (error) {
+    console.error("❌ API test error:", error);
+    alert(
+      "Cannot connect to API endpoint. Check if your backend server is running."
+    );
+  }
+};
+
+const testLaravelBackend = async () => {
+  console.log("🧪 Testing Laravel backend configuration...");
+
+  const tests = [
+    {
+      name: "CORS Preflight Test",
+      url: "http://localhost:8000/api/bookings",
+      method: "OPTIONS",
+      headers: {
+        Origin: "http://localhost:3000",
+        "Access-Control-Request-Method": "POST",
+        "Access-Control-Request-Headers": "Content-Type, Authorization",
+      },
     },
-  });
+    {
+      name: "API Route Test (GET)",
+      url: "http://localhost:8000/api/bookings",
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    },
+    {
+      name: "Authentication Test",
+      url: "http://localhost:8000/api/user",
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization:
+          "Bearer " + (localStorage.getItem("access_token") || "test"),
+      },
+    },
+  ];
+
+  for (const test of tests) {
+    try {
+      console.log(`🧪 Running: ${test.name}`);
+      const res = await fetch(test.url, {
+        method: test.method,
+        headers: test.headers,
+      });
+
+      console.log(`🧪 ${test.name} - Status:`, res.status);
+      console.log(
+        `🧪 ${test.name} - Headers:`,
+        Object.fromEntries(res.headers.entries())
+      );
+
+      if (res.status === 200) {
+        const text = await res.text();
+        console.log(`🧪 ${test.name} - Response:`, text.substring(0, 200));
+      }
+    } catch (error) {
+      console.error(`❌ ${test.name} failed:`, error);
+    }
+  }
+};
+
+const checkAuthenticationStatus = () => {
+  console.log("🔐 Checking authentication status...");
+
+  const token = localStorage.getItem("access_token");
+  const authToken = localStorage.getItem("auth_token");
+
+  console.log("🔐 access_token:", token ? "Present" : "Not present");
+  console.log("🔐 auth_token:", authToken ? "Present" : "Not present");
+
+  if (!token && !authToken) {
+    console.log("❌ No authentication tokens found");
+    alert("Please log in to make a booking.");
+    router.push("/signin");
+    return false;
+  }
+
+  console.log("✅ Authentication tokens found");
+  return true;
+};
+
+const testAuthentication = async () => {
+  console.log("🧪 Testing authentication...");
+
+  const token = localStorage.getItem("access_token");
+  const authToken = localStorage.getItem("auth_token");
+  const authTokenToUse = token || authToken;
+
+  if (!authTokenToUse) {
+    console.log("❌ No token available for testing");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:8000/api/user", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: "Bearer " + authTokenToUse,
+      },
+    });
+
+    console.log("🧪 Auth test response status:", res.status);
+
+    if (res.status === 200) {
+      const data = await res.json();
+      console.log("✅ Authentication successful:", data);
+    } else if (res.status === 401) {
+      console.log("❌ Authentication failed - token invalid");
+      alert("Your session has expired. Please log in again.");
+      router.push("/signin");
+    } else {
+      console.log("❌ Authentication test failed:", res.status);
+    }
+  } catch (error) {
+    console.error("❌ Authentication test error:", error);
+  }
 };
 
 onMounted(() => {
+  console.log("💳 Payment page mounted");
+  console.log("💳 Route query:", route.query);
+
   bookingData.value = { ...route.query };
+  console.log("💳 Booking data set:", bookingData.value);
 
   if (route.query.passengers) {
     passengers.value = JSON.parse(route.query.passengers);
+    console.log("💳 Passengers parsed:", passengers.value);
   }
   if (route.query.contactDetails) {
     contactDetails.value = JSON.parse(route.query.contactDetails);
+    console.log("💳 Contact details parsed:", contactDetails.value);
   }
 
+  console.log("💳 Starting timer...");
   startTimer();
+  console.log("💳 Payment page initialization complete");
+
+  // Check authentication status
+  if (!checkAuthenticationStatus()) {
+    return;
+  }
+
+  // Test API endpoint on mount
+  testAPIEndpoint();
+
+  // Test Laravel backend configuration
+  testLaravelBackend();
+
+  // Test authentication
+  testAuthentication();
 });
 
 onUnmounted(() => {

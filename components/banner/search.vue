@@ -1,14 +1,14 @@
 <template>
   <div
-    class="search-bar-root bg-white/90 border border-gray-200 px-4 md:px-8 py-6 rounded-3xl shadow-2xl flex items-center gap-6 max-w-6xl mx-auto transition-all duration-300 hover:shadow-3xl hover:border-red-200 hover:bg-white/95"
+    class="search-bar-root bg-white/90 border border-gray-200 px-4 md:px-8 py-6 rounded-3xl shadow-2xl flex items-center  max-w-6xl mx-auto transition-all duration-300 hover:shadow-3xl hover:border-red-200 hover:bg-white/95"
   >
     <!-- From -->
     <div
-      class="flex items-center gap-3 px-2 md:px-4 py-3 flex-1 border-b-2 md:border-b-0 md:border-r-2 border-gray-100 w-full md:w-auto transition-colors duration-200 focus-within:border-red-300"
+      class="flex items-center  px-2 md:px-4 py-3 flex-1 border-b-2 md:border-b-0 md:border-r-2 border-gray-100 w-full md:w-auto transition-colors duration-200 focus-within:border-red-300"
     >
       <div class="text-gray-400">
         <svg
-          class="w-6 h-6 text-green-500"
+          class="w-6 h-6 text-blue-500"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -33,7 +33,7 @@
         }}</label>
         <select
           v-model="searchForm.from"
-          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full min-w-[140px] md:min-w-[180px] text-base font-medium rounded-lg focus:ring-2 focus:ring-red-300 transition-all duration-200"
+          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full min-w-[140px] md:min-w-[180px] text-base font-medium rounded-lg "
         >
           <option value="">
             {{ t("Select departure city", "ជ្រើសរើសទីក្រុងចេញ") }}
@@ -55,7 +55,7 @@
         aria-label="Swap cities"
       >
         <svg
-          class="w-5 h-5 text-gray-400"
+          class="w-6 h-6 text-blue-500"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -76,7 +76,7 @@
     >
       <div class="text-gray-400">
         <svg
-          class="w-6 h-6 text-red-500"
+          class="w-6 h-6 text-blue-500"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -101,7 +101,7 @@
         }}</label>
         <select
           v-model="searchForm.to"
-          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full min-w-[140px] md:min-w-[180px] text-base font-medium rounded-lg focus:ring-2 focus:ring-red-300 transition-all duration-200"
+          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full min-w-[140px] md:min-w-[180px] text-base font-medium rounded-lg "
         >
           <option value="">
             {{ t("Select destination city", "ជ្រើសរើសទីក្រុងដំណើរ") }}
@@ -140,7 +140,7 @@
           v-model="searchForm.departureDate"
           type="date"
           :min="today"
-          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full text-base font-medium rounded-lg focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full text-base font-medium rounded-lg "
         />
       </div>
     </div>
@@ -172,24 +172,24 @@
           v-model="searchForm.returnDate"
           type="date"
           :min="searchForm.departureDate || today"
-          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full text-base font-medium rounded-lg focus:ring-2 focus:ring-blue-300 transition-all duration-200"
+          class="text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full text-base font-medium rounded-lg "
           :placeholder="t('Optional', 'ស្រេចចិត្ត')"
         />
       </div>
     </div>
 
     <!-- Search Button -->
-    <div
-      class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 rounded-2xl flex items-center justify-center transition-all duration-200 order-6 shadow-lg w-full md:w-auto mt-4 md:mt-0"
+    <Button
+      class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 rounded-2xl flex items-center justify-center transition-all duration-200 order-6 shadow-lg w-full md:w-auto  md:mt-0"
     >
       <button
         @click="searchBuses"
         :disabled="!canSearch"
-        class="text-white font-bold px-8 py-4 rounded-2xl text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-md focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-200 w-full md:w-auto hover:scale-105"
+        class="text-white font-bold px-8 py-4 rounded-2xl text-lg disabled:opacity-50 disabled:cursor-not-allowed shadow-md focus:outline-none  w-full md:w-auto hover:scale-105"
       >
         {{ t("SEARCH", "ស្វែងរក") }}
       </button>
-    </div>
+    </Button>
   </div>
 </template>
 
@@ -291,7 +291,6 @@ searchForm.value.departureDate = today.value;
 }
 .search-bar-root:hover {
   box-shadow: 0 12px 40px 0 rgba(220, 38, 38, 0.15);
-  border-color: #fca5a5;
   background: rgba(255, 255, 255, 0.98);
 }
 @media (min-width: 768px) {
@@ -303,7 +302,6 @@ searchForm.value.departureDate = today.value;
 select:focus,
 input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #f87171;
 }
 select,
 input {

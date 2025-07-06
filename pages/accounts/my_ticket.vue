@@ -238,6 +238,27 @@
                 </svg>
                 {{ t("Download", "ទាញយក") }}
               </button>
+
+              <button
+                v-if="ticket.status === 'Confirmed'"
+                @click="cancelTicket(ticket)"
+                class="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                {{ t("Cancel", "បោះបង់") }}
+              </button>
             </div>
           </div>
         </div>
@@ -882,6 +903,31 @@ Thank you for choosing our service!
   window.URL.revokeObjectURL(url);
 };
 
+const cancelTicket = async (ticket) => {
+  if (!confirm("Are you sure you want to cancel this ticket?")) return;
+  const token = localStorage.getItem("auth_token");
+  try {
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/user/bookings/${ticket.id}/cancel`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        body: JSON.stringify({}),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Cancel failed");
+    alert("Ticket cancelled successfully!");
+    fetchMyBookings();
+  } catch (e) {
+    alert(e.message || "Cancel failed");
+  }
+};
+
 const filteredTickets = computed(() => {
   if (!Array.isArray(tickets.value)) return [];
   if (filterStatus.value === "all") return tickets.value;
@@ -950,7 +996,7 @@ function mapApiTicket(apiTicket) {
 }
 
 async function fetchMyBookings() {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("auth_token");
   try {
     const res = await fetch("http://localhost:8000/api/my-bookings", {
       headers: {

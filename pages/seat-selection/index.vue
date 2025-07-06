@@ -510,32 +510,23 @@ const getButtonText = () => {
 const proceedToBook = () => {
   if (selectedSeats.value.length === 0) return;
 
-  // If this is a round trip and we're on the outbound journey
   if (hasReturnDate.value && currentJourneyType.value === "outbound") {
-    // Store outbound booking details
     outboundBooking.value = {
       seats: [...selectedSeats.value],
       totalAmount: totalAmount.value.toFixed(2),
     };
-
-    // Switch to return journey
     currentJourneyType.value = "return";
-    selectedSeats.value = []; // Clear selected seats for return journey
-
-    // Generate different occupied seats for return journey (simulate different bus)
+    selectedSeats.value = [];
     availableSeats.value = ["1-A", "3-B", "2-H", "4-F", "1-E"];
-
     return;
   }
 
-  // Proceed to booking confirmation
   const bookingData = {
     ...busParams.value,
     currentJourneyType: currentJourneyType.value,
   };
 
   if (hasReturnDate.value) {
-    // Round trip booking
     bookingData.outboundSeats = outboundBooking.value.seats.join(",");
     bookingData.outboundTotal = outboundBooking.value.totalAmount;
     bookingData.returnSeats = selectedSeats.value.join(",");
@@ -544,17 +535,20 @@ const proceedToBook = () => {
       parseFloat(outboundBooking.value.totalAmount) + totalAmount.value
     ).toFixed(2);
   } else {
-    // One way booking
     bookingData.seats = selectedSeats.value.join(",");
     bookingData.totalAmount = totalAmount.value.toFixed(2);
   }
 
-  router.push({
-    path: "/booking-confirmation",
-    query: bookingData,
-  });
+  try {
+    router.push({
+      path: "/booking-confirmation",
+      query: bookingData,
+    });
+  } catch (error) {
+    console.error("Error navigating to booking-confirmation:", error);
+    alert("Error navigating to booking confirmation: " + error.message);
+  }
 
-  // After booking, close modal and refresh seat availability
   fetchSeatAvailability();
   selectedSeats.value = [];
 };

@@ -4,75 +4,48 @@
     <div class="bg-white border-b">
       <div class="max-w-7xl mx-auto px-6 py-6">
         <div
-          class="bg-white px-6 py-4 rounded-2xl shadow-lg flex flex-row lg:flex-row items-center gap-4 relative"
+          class="bg-white px-6 py-4 rounded-2xl flex flex-row lg:flex-row items-center gap-4 relative"
+        ></div>
+        <!-- From -->
+        <div
+          class="flex items-center gap-3 px-4 py-3 flex-1 border-b lg:border-b-0 lg:border-r border-gray-200 w-full lg:w-auto"
         >
-          <!-- Loading spinner for cities -->
-          <div
-            v-if="loadingCities"
-            class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10"
-          >
+          <div class="text-gray-400 flex items-center">
             <svg
-              class="animate-spin h-8 w-8 text-red-500"
-              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 text-blue-500"
               fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
               <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8z"
-              ></path>
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
           </div>
-          <!-- From -->
-          <div
-            class="flex items-center gap-3 px-4 py-3 flex-1 border-b lg:border-b-0 lg:border-r border-gray-200 w-full lg:w-auto"
-          >
-            <div class="text-gray-400">
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </div>
-            <div class="flex flex-col flex-1">
-              <label class="text-sm font-medium text-gray-600 mb-1">From</label>
-              <select
-                v-model="searchForm.from"
-                class="text-lg font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full"
-              >
-                <option value="">Select departure city</option>
-                <option
-                  v-for="city in cities"
-                  :key="city.id"
-                  :value="city.name"
-                >
-                  {{ city.name }}
-                </option>
-              </select>
-            </div>
+          <div class="flex flex-col flex-1">
+            <label class="text-sm font-medium text-gray-600 mb-1">{{
+              t("From", "ចេញពី")
+            }}</label>
+            <select
+              v-model="searchForm.from"
+              class="text-lg font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full"
+            >
+              <option value="">
+                {{ t("Select departure city", "ជ្រើសរើសកន្លែងចេញពី") }}
+              </option>
+              <option v-for="city in cities" :key="city.id" :value="city.name">
+                {{ city.name }}
+              </option>
+            </select>
           </div>
 
           <!-- Swap Button -->
@@ -82,7 +55,7 @@
               class="p-2 rounded-full hover:bg-gray-100 transition-colors"
             >
               <svg
-                class="w-5 h-5 text-gray-400"
+                class="w-6 h-6 text-blue-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -101,9 +74,9 @@
           <div
             class="flex items-center gap-3 px-4 py-3 flex-1 border-b lg:border-b-0 lg:border-r border-gray-200 w-full lg:w-auto order-2 lg:order-3"
           >
-            <div class="text-gray-400">
+            <div class="text-gray-400 flex items-center">
               <svg
-                class="w-6 h-6"
+                class="w-6 h-6 text-blue-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -123,12 +96,16 @@
               </svg>
             </div>
             <div class="flex flex-col flex-1">
-              <label class="text-sm font-medium text-gray-600 mb-1">To</label>
+              <label class="text-sm font-medium text-gray-600 mb-1">{{
+                t("To", "ទៅកាន់")
+              }}</label>
               <select
                 v-model="searchForm.to"
                 class="text-lg font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer w-full"
               >
-                <option value="">Select destination city</option>
+                <option value="">
+                  {{ t("Select destination city", "ជ្រើសរើសកន្លែងចេញពី") }}
+                </option>
                 <option
                   v-for="city in cities"
                   :key="city.id"
@@ -146,7 +123,7 @@
           >
             <div class="text-gray-400">
               <svg
-                class="w-6 h-6"
+                class="w-6 h-6 text-blue-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -160,9 +137,9 @@
               </svg>
             </div>
             <div class="flex flex-col flex-1">
-              <label class="text-sm font-medium text-gray-600 mb-1"
-                >Departure Date</label
-              >
+              <label class="text-sm font-medium text-gray-600 mb-1">{{
+                t("Departure Date", "ថ្ធៃចេញដំណើរ")
+              }}</label>
               <input
                 v-model="searchForm.departureDate"
                 type="date"
@@ -178,7 +155,7 @@
           >
             <div class="text-gray-400">
               <svg
-                class="w-6 h-6"
+                class="w-6 h-6 text-blue-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -192,9 +169,9 @@
               </svg>
             </div>
             <div class="flex flex-col flex-1">
-              <label class="text-sm font-medium text-gray-600 mb-1"
-                >Return Date</label
-              >
+              <label class="text-sm font-medium text-gray-600 mb-1">{{
+                t("Return Date", "ថ្ធៃត្រលប់មកវិញ")
+              }}</label>
               <input
                 v-model="searchForm.returnDate"
                 type="date"
@@ -222,10 +199,11 @@
 
     <div class="max-w-7xl mx-auto px-6 py-6">
       <div class="flex flex gap-6">
-        <!-- Filters Sidebar -->
         <div class="w-64 flex-shrink-0">
           <div class="bg-white rounded-lg shadow-sm p-4 sticky top-6">
-            <h3 class="font-semibold text-gray-800 mb-4">FILTERS</h3>
+            <h3 class="font-semibold text-gray-800 mb-4">
+              {{ t("FILTERS", "តម្រង់") }}
+            </h3>
 
             <!-- Red Deals Filter -->
             <div class="mb-6">
@@ -235,7 +213,9 @@
                   v-model="filters.redDeals"
                   class="rounded border-gray-300"
                 />
-                <span class="text-sm text-gray-700">Red Deals (13)</span>
+                <span class="text-sm text-gray-700"
+                  >{{ t("Red Deals", "កិច្ចព្រមព្រៀងក្រហម") }} (13)</span
+                >
               </label>
             </div>
 
@@ -247,7 +227,9 @@
                   v-model="filters.cancellable"
                   class="rounded border-gray-300"
                 />
-                <span class="text-sm text-gray-700">Cancellable (2)</span>
+                <span class="text-sm text-gray-700"
+                  >{{ t("Cancellable", "អាចបោះបង់បាន") }} (2)</span
+                >
               </label>
             </div>
 
@@ -259,13 +241,17 @@
                   v-model="filters.mTicket"
                   class="rounded border-gray-300"
                 />
-                <span class="text-sm text-gray-700">M-ticket (43)</span>
+                <span class="text-sm text-gray-700"
+                  >{{ t("M-ticket", "វិញ្ញាបនបត្រអេឡិចត្រូនិច") }} (43)</span
+                >
               </label>
             </div>
 
             <!-- Departure Time -->
             <div class="mb-6">
-              <h4 class="font-medium text-gray-800 mb-3">DEPARTURE TIME</h4>
+              <h4 class="font-medium text-gray-800 mb-3">
+                {{ t("DEPARTURE TIME", "ពេលចេញដំណើរ") }}
+              </h4>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 cursor-pointer text-sm">
                   <input
@@ -273,7 +259,9 @@
                     v-model="filters.before6am"
                     class="rounded border-gray-300"
                   />
-                  <span class="text-gray-700">Before 6 am (0)</span>
+                  <span class="text-gray-700"
+                    >{{ t("Before 6 am", "មុនម៉ោង ៦") }} (0)</span
+                  >
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer text-sm">
                   <input
@@ -281,7 +269,9 @@
                     v-model="filters.morning"
                     class="rounded border-gray-300"
                   />
-                  <span class="text-gray-700">6 am to 12 pm (0)</span>
+                  <span class="text-gray-700"
+                    >{{ t("6 am to 12 pm", "ម៉ោង ៦ ដល់ ១២ ថ្ងៃ") }} (0)</span
+                  >
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer text-sm">
                   <input
@@ -289,7 +279,12 @@
                     v-model="filters.afternoon"
                     class="rounded border-gray-300"
                   />
-                  <span class="text-gray-700">12 pm to 6 pm (2)</span>
+                  <span class="text-gray-700"
+                    >{{
+                      t("12 pm to 6 pm", "ម៉ោង ១២ ថ្ងៃ ដល់ ៦ ល្ងាច")
+                    }}
+                    (2)</span
+                  >
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer text-sm">
                   <input
@@ -297,14 +292,18 @@
                     v-model="filters.evening"
                     class="rounded border-gray-300"
                   />
-                  <span class="text-gray-700">After 6 pm (41)</span>
+                  <span class="text-gray-700"
+                    >{{ t("After 6 pm", "បន្ទាប់ពីម៉ោង ៦ ល្ងាច") }} (41)</span
+                  >
                 </label>
               </div>
             </div>
 
             <!-- Bus Types -->
             <div class="mb-6">
-              <h4 class="font-medium text-gray-800 mb-3">BUS TYPES</h4>
+              <h4 class="font-medium text-gray-800 mb-3">
+                {{ t("BUS TYPES", "ប្រភេទរថយន្ត") }}
+              </h4>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 cursor-pointer text-sm">
                   <input
@@ -312,7 +311,9 @@
                     v-model="filters.minivan"
                     class="rounded border-gray-300"
                   />
-                  <span class="text-gray-700">Minivan (14)</span>
+                  <span class="text-gray-700"
+                    >{{ t("Minivan", "រថយន្តតូច") }} (14)</span
+                  >
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer text-sm">
                   <input
@@ -320,50 +321,105 @@
                     v-model="filters.hotelBus"
                     class="rounded border-gray-300"
                   />
-                  <span class="text-gray-700">Hotel Bus (Night Bus) (29)</span>
+                  <span class="text-gray-700"
+                    >{{
+                      t("Hotel Bus (Night Bus)", "រថយន្តសណ្ឋាគារ (រថយន្តយប់)")
+                    }}
+                    (29)</span
+                  >
                 </label>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Main Content -->
         <div class="flex-1">
-          <!-- Simple loading for buses -->
-          <div v-if="loading" class="flex items-center justify-center py-16">
+          <!-- Bus Loading Skeleton -->
+          <div v-if="loading" class="space-y-4">
             <div
-              class="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"
-            ></div>
+              v-for="i in 5"
+              :key="i"
+              class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 animate-pulse"
+              style="
+                animation-duration: 2s;
+                animation-timing-function: ease-in-out;
+              "
+            >
+              <div class="flex items-center justify-between">
+                <!-- Bus Info Skeleton -->
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-16 bg-gray-300 rounded-full"></div>
+                  <div>
+                    <div class="h-4 bg-gray-300 rounded w-32 mb-2"></div>
+                    <div class="h-3 bg-gray-200 rounded w-24"></div>
+                  </div>
+                </div>
+
+                <!-- Journey Info Skeleton -->
+                <div class="flex items-center gap-8">
+                  <div class="text-center">
+                    <div class="h-6 bg-gray-300 rounded w-16 mb-1"></div>
+                    <div class="h-3 bg-gray-200 rounded w-20"></div>
+                  </div>
+                  <div class="text-center">
+                    <div class="h-4 bg-gray-300 rounded w-12 mb-1"></div>
+                  </div>
+                  <div class="text-center">
+                    <div class="h-6 bg-gray-300 rounded w-16 mb-1"></div>
+                    <div class="h-3 bg-gray-200 rounded w-20"></div>
+                  </div>
+                </div>
+
+                <!-- Price & Action Skeleton -->
+                <div class="text-right">
+                  <div class="h-6 bg-gray-300 rounded w-20 mb-2"></div>
+                  <div class="h-8 bg-gray-300 rounded w-24"></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div v-else>
-            <!-- Offers Section -->
+            <!-- Offers Section with Skeleton -->
             <div
               v-if="loadingOffers"
-              class="flex items-center justify-center py-4"
+              class="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
             >
-              <svg
-                class="animate-spin h-6 w-6 text-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
+              <div
+                v-for="i in 4"
+                :key="i"
+                role="status"
+                class="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center bg-white rounded-lg p-4 shadow-sm border border-gray-200"
+                style="
+                  animation-duration: 2s;
+                  animation-timing-function: ease-in-out;
+                "
               >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                ></path>
-              </svg>
-              <span class="ml-2 text-gray-500 text-base"
-                >Loading offers...</span
-              >
+                <div
+                  class="flex items-center justify-center w-full h-32 bg-gray-300 rounded-sm sm:w-"
+                >
+                  <svg
+                    class="w-8 h-8 text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 18"
+                  >
+                    <path
+                      d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"
+                    />
+                  </svg>
+                </div>
+                <div class="w-full">
+                  <div class="h-2.5 bg-gray-300 rounded-full w-24 mb-2"></div>
+                  <div
+                    class="h-2 bg-gray-200 rounded-full max-w-[120px] mb-1"
+                  ></div>
+                  <div
+                    class="h-2 bg-gray-200 rounded-full max-w-[100px] mb-1"
+                  ></div>
+                  <div class="h-2 bg-gray-200 rounded-full max-w-[80px]"></div>
+                </div>
+              </div>
             </div>
             <div
               v-else-if="offers.length > 0"
@@ -402,10 +458,13 @@
             <!-- Results Header -->
             <div class="flex items-center justify-between mb-6">
               <div class="text-lg font-semibold text-gray-800">
-                {{ filteredResults.length }} Buses found
+                {{ filteredResults.length }}
+                {{ t("Buses found", "រថយន្តដែលរកឃើញ") }}
               </div>
               <div class="flex items-center gap-4">
-                <span class="text-sm font-medium text-gray-700">SORT BY:</span>
+                <span class="text-sm font-medium text-gray-700">{{
+                  t("SORT BY:", "តម្រៀបតាម:")
+                }}</span>
                 <div class="flex gap-2">
                   <button
                     @click="sortBy = 'departure'"
@@ -416,7 +475,7 @@
                     "
                     class="px-3 py-1 rounded text-sm"
                   >
-                    Departure
+                    {{ t("Departure", "ពេលចេញ") }}
                   </button>
                   <button
                     @click="sortBy = 'duration'"
@@ -427,7 +486,7 @@
                     "
                     class="px-3 py-1 rounded text-sm"
                   >
-                    Duration
+                    {{ t("Duration", "រយៈពេល") }}
                   </button>
                   <button
                     @click="sortBy = 'arrival'"
@@ -438,7 +497,7 @@
                     "
                     class="px-3 py-1 rounded text-sm"
                   >
-                    Arrival
+                    {{ t("Arrival", "ពេលមកដល់") }}
                   </button>
                   <button
                     @click="sortBy = 'rating'"
@@ -449,7 +508,7 @@
                     "
                     class="px-3 py-1 rounded text-sm"
                   >
-                    Ratings
+                    {{ t("Ratings", "ការវាយតម្លៃ") }}
                   </button>
                   <button
                     @click="sortBy = 'price'"
@@ -460,7 +519,7 @@
                     "
                     class="px-3 py-1 rounded text-sm"
                   >
-                    Fare
+                    {{ t("Fare", "តម្លៃ") }}
                   </button>
                   <button
                     @click="sortBy = 'seats'"
@@ -471,7 +530,7 @@
                     "
                     class="px-3 py-1 rounded text-sm"
                   >
-                    Seats Available
+                    {{ t("Seats Available", "កៅអីដែលមាន") }}
                   </button>
                 </div>
               </div>
@@ -480,7 +539,7 @@
             <!-- Bus Results -->
             <div class="space-y-4">
               <div
-                v-if="filteredResults.length === 0 && !loading"
+                v-if="filteredResults.length === 0"
                 class="text-center text-gray-500 py-8 text-lg"
               >
                 {{
@@ -499,18 +558,27 @@
                   <!-- Bus Info -->
                   <div class="flex items-center gap-4">
                     <div
-                      class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center"
+                      class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center overflow-hidden"
                     >
-                      <span class="text-yellow-600 font-bold text-sm">{{
-                        image_url
-                      }}</span>
+                      <img
+                        v-if="bus.image_url"
+                        :src="bus.image_url"
+                        alt="Bus"
+                        class="w-full h-full object-cover"
+                      />
+                      <img
+                        v-else
+                        src="/images/bus.png"
+                        alt="Bus"
+                        class="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
                       <h3 class="font-semibold text-gray-800">
                         {{ bus.name }}
                       </h3>
                       <div class="text-sm text-gray-600">
-                        Type: {{ bus.type }}
+                        {{ t("Type:", "ប្រភេទ:") }} {{ bus.type }}
                       </div>
                     </div>
                   </div>
@@ -519,7 +587,7 @@
                   <div class="flex items-center gap-8">
                     <div class="text-center">
                       <div class="text-2xl font-bold text-gray-800">
-                        {{ bus.departure_time }}
+                        {{ formatTime(bus.departure_time) }}
                       </div>
                       <div class="text-sm text-gray-600">
                         {{ bus.departure }}
@@ -527,12 +595,12 @@
                     </div>
                     <div class="text-center">
                       <div class="text-sm text-gray-600">
-                        Seats: {{ bus.seats }}
+                        {{ t("Seats:", "កៅអី:") }} {{ bus.seats }}
                       </div>
                     </div>
                     <div class="text-center">
                       <div class="text-2xl font-bold text-gray-800">
-                        {{ bus.arrival_time }}
+                        {{ formatTime(bus.arrival_time) }}
                       </div>
                       <div class="text-sm text-gray-600">
                         {{ bus.arrival }}
@@ -549,7 +617,7 @@
                       @click="selectSeats(bus)"
                       class="mt-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
                     >
-                      VIEW SEATS
+                      {{ t("VIEW SEATS", "មើលកៅអី") }}
                     </button>
                   </div>
                 </div>
@@ -614,7 +682,16 @@ onMounted(async () => {
   if (route.query.returnDate)
     searchForm.value.returnDate = route.query.returnDate;
 
-  // Fetch offers
+  // Only fetch buses if we have search parameters
+  if (
+    searchForm.value.from &&
+    searchForm.value.to &&
+    searchForm.value.departureDate
+  ) {
+    await fetchBuses();
+  }
+
+  // Then fetch offers after buses are loaded
   loadingOffers.value = true;
   try {
     const res = await fetch("http://127.0.0.1:8000/api/offers");
@@ -659,25 +736,121 @@ const modifySearch = () => {
 };
 
 const selectSeats = (bus) => {
-  // Navigate to seat selection page with bus and search details
-  router.push({
-    path: "/seat-selection",
-    query: {
+  try {
+    const query = {
       busId: bus.id,
       operator: bus.name,
       busType: bus.type,
       departureTime: bus.departure_time,
       arrivalTime: bus.arrival_time,
-      duration: bus.duration,
       price: bus.price,
       from: searchForm.value.from,
-      fromLabel: getCityLabel(searchForm.value.from),
       to: searchForm.value.to,
-      toLabel: getCityLabel(searchForm.value.to),
       departureDate: searchForm.value.departureDate,
-      returnDate: searchForm.value.returnDate || "",
+    };
+
+    const queryString = new URLSearchParams(query).toString();
+    const url = `/seat-selection?${queryString}`;
+    window.location.href = url;
+  } catch (error) {
+    console.error("Error navigating to seat-selection:", error);
+    alert("Error navigating to seat selection: " + error.message);
+  }
+};
+
+const testBooking = (bus) => {
+  console.log("🧪 TEST: Bus data:", bus);
+  console.log("🧪 TEST: Testing direct booking...");
+
+  // Test direct booking without seat selection
+  const bookingData = {
+    busId: bus.id,
+    operator: bus.name,
+    busType: bus.type,
+    departureTime: bus.departure_time,
+    arrivalTime: bus.arrival_time,
+    price: bus.price,
+    from: searchForm.value.from,
+    to: searchForm.value.to,
+    departureDate: searchForm.value.departureDate,
+    seats: "1,2", // Test seats
+    totalAmount: (bus.price * 2).toFixed(2),
+  };
+
+  console.log("🧪 TEST: Booking data:", bookingData);
+
+  // Try to go directly to booking confirmation
+  const queryString = new URLSearchParams(bookingData).toString();
+  const url = `/booking-confirmation?${queryString}`;
+  console.log("🧪 TEST: Direct booking URL:", url);
+
+  window.location.href = url;
+};
+
+const testDirectBooking = () => {
+  console.log("🧪 TEST: Direct booking test...");
+  const testData = {
+    busId: "5",
+    operator: "Laryta",
+    busType: "Premium",
+    departureTime: "21:13",
+    arrivalTime: "12:13",
+    price: "14",
+    from: "Phnom Penh",
+    to: "Siem Reap",
+    departureDate: "2025-07-06",
+    seats: "1",
+    totalAmount: "14.00",
+  };
+
+  const queryString = new URLSearchParams(testData).toString();
+  const url = `/booking-confirmation?${queryString}`;
+  console.log("🧪 TEST: Direct booking URL:", url);
+
+  window.location.href = url;
+};
+
+const testDirectPayment = () => {
+  console.log("🧪 TEST: Direct payment test...");
+
+  // Create test passenger data
+  const testPassengers = [
+    {
+      name: "Test Passenger 1",
+      nationality: "Cambodian",
+      gender: "Female",
+      age: "25",
     },
-  });
+  ];
+
+  // Create test contact data
+  const testContact = {
+    email: "test@example.com",
+    phone: "0972076423",
+    countryCode: "+855",
+  };
+
+  const testData = {
+    busId: "5",
+    operator: "Laryta",
+    busType: "Premium",
+    departureTime: "21:13",
+    arrivalTime: "12:13",
+    price: "14",
+    from: "Phnom Penh",
+    to: "Siem Reap",
+    departureDate: "2025-07-06",
+    seats: "1",
+    totalAmount: "14.00",
+    passengers: JSON.stringify(testPassengers),
+    contactDetails: JSON.stringify(testContact),
+  };
+
+  const queryString = new URLSearchParams(testData).toString();
+  const url = `/payment?${queryString}`;
+  console.log("🧪 TEST: Direct payment URL:", url);
+
+  window.location.href = url;
 };
 
 const viewDetails = (bus) => {
@@ -748,6 +921,9 @@ const performSearch = () => {
       returnDate: searchForm.value.returnDate || "",
     },
   });
+
+  // Fetch buses with the search parameters
+  fetchBuses();
 };
 
 const filters = ref({
@@ -800,9 +976,13 @@ async function fetchBuses() {
     if (filters.value.minivan) busTypes.push("minivan");
     if (filters.value.hotelBus) busTypes.push("hotel_bus");
     if (busTypes.length > 0) params.append("bus_type", busTypes.join(","));
-    const res = await fetch(`http://localhost:8000/api/buses?${params}`);
+
+    const url = `http://localhost:8000/api/buses?${params}`;
+    const res = await fetch(url);
+
     if (!res.ok) throw new Error("Failed to fetch buses");
     const data = await res.json();
+
     let buses = [];
     if (Array.isArray(data)) {
       buses = data;
@@ -813,6 +993,7 @@ async function fetchBuses() {
     } else if (Array.isArray(data.data)) {
       buses = data.data;
     }
+
     searchResults.value = buses;
   } catch (e) {
     error.value = e.message || "Failed to fetch buses";
@@ -822,56 +1003,42 @@ async function fetchBuses() {
   }
 }
 
-onMounted(fetchBuses);
-watch(
-  () => [
-    searchForm.value.from,
-    searchForm.value.to,
-    searchForm.value.departureDate,
-    searchForm.value.returnDate,
-    { ...filters.value },
-  ],
-  fetchBuses
-);
-
 // Add a computed property to filter searchResults based on the search form
 const filteredResults = computed(() => {
-  return searchResults.value.filter((bus) => {
-    const matchesFrom =
-      !searchForm.value.from ||
-      (bus.departure &&
-        bus.departure.toLowerCase().trim() ===
-          searchForm.value.from.toLowerCase().trim());
-    const matchesTo =
-      !searchForm.value.to ||
-      (bus.arrival &&
-        bus.arrival.toLowerCase().trim() ===
-          searchForm.value.to.toLowerCase().trim());
-    const matchesDate =
-      !searchForm.value.departureDate ||
-      (bus.departure_time &&
-        bus.departure_time.startsWith(searchForm.value.departureDate));
-    return matchesFrom && matchesTo && matchesDate;
-  });
+  // Since the API already returns filtered results, just return them directly
+  return searchResults.value;
 });
+
+// Helper to format time as HH:mm
+function formatTime(timeStr) {
+  if (!timeStr) return "--:--";
+  // If timeStr is a full ISO string, extract time part
+  let t = timeStr;
+  if (t.includes("T")) t = t.split("T")[1];
+  // Only keep HH:mm
+  if (t.length >= 5) return t.slice(0, 5);
+  return t;
+}
 </script>
 
 <style scoped>
-/* Custom styles for better visual hierarchy */
 .bus-card {
   transition: all 0.3s ease;
 }
-
+.loading-spinner {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid;
+  border-color: #000 #0000;
+  animation: l1 1s infinite;
+}
+@keyframes l1 {
+  to {
+    transform: rotate(0.5turn);
+  }
+}
 .bus-card:hover {
   transform: translateY(-2px);
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>

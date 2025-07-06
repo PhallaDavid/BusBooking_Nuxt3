@@ -143,8 +143,9 @@ async function login() {
     if (!res.ok) {
       throw new Error(data.message || "Login failed");
     }
-    if (data.access_token) {
-      localStorage.setItem("access_token", data.access_token);
+    if (data.token) {
+      localStorage.setItem("auth_token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
     }
     success.value = "Login successful! Redirecting...";
     setTimeout(() => router.push("/"), 1500);

@@ -21,7 +21,7 @@
       </h1>
 
       <h1 class="text-2xl text-white mb-2">
-        Customer support available between 10AM–7PM, 7 days a week
+        {{ t("Customer support available between 10AM–7PM, 7 days a week","ជំនួយអតិថិជនមាននៅចន្លោះម៉ោង 10 ព្រឹក ដល់ 7 យប់ 7 ថ្ងៃក្នុងមួយសប្តាហ៍") }}
       </h1>
 
     </div>
@@ -31,4 +31,6 @@
 
 <script setup>
 import HelpCenter from '~/components/help-center.vue'
+import { ref } from "vue";
+import { t, language } from "@/plugins/translate";
 </script>

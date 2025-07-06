@@ -320,13 +320,15 @@
             {{ t("Total Amount", "សរុបចំនាំ") }}:
             <span class="text-xl">USD {{ totalAmount }}</span>
           </div>
-          <button
-            @click="proceedToPay"
-            :disabled="!canProceed"
-            class="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 px-8 rounded-lg transition-colors"
-          >
-            {{ t("PROCEED TO PAY", "បន្ទាប់ទៅកក់") }}
-          </button>
+          <div class="flex gap-2">
+            <button
+              @click="proceedToPay"
+              :disabled="!canProceed"
+              class="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 px-8 rounded-lg transition-colors"
+            >
+              {{ t("PROCEED TO PAY", "បន្ទាប់ទៅកក់") }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -403,7 +405,6 @@ const initializePassengers = () => {
 const proceedToPay = () => {
   if (!canProceed.value) return;
 
-  // Navigate to payment page with all booking and passenger data
   const paymentData = {
     ...bookingData.value,
     passengers: JSON.stringify(passengers.value),
@@ -411,14 +412,18 @@ const proceedToPay = () => {
     totalAmount: totalAmount.value,
   };
 
-  router.push({
-    path: "/payment",
-    query: paymentData,
-  });
+  try {
+    router.push({
+      path: "/payment",
+      query: paymentData,
+    });
+  } catch (error) {
+    console.error("Error navigating to payment:", error);
+    alert("Error navigating to payment: " + error.message);
+  }
 };
 
 onMounted(() => {
-  // Get booking data from URL parameters
   bookingData.value = { ...route.query };
 
   initializePassengers();

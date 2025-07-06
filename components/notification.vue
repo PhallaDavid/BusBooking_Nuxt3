@@ -7,11 +7,11 @@
     >
       <font-awesome-icon
         :icon="['fas', 'bell']"
-        class="w-6 h-6 text-gray-600"
+        class="w-6 h-6 text-blue-500"
       />
       <span
         v-if="unreadCount > 0"
-        class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] rounded-full px-1 py-0.5 font-bold animate-bounce border border-white shadow-sm"
+        class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] rounded-full px-1 py-0.7 font-bold animate-bounce border border-white shadow-sm"
         >{{ unreadCount }}</span
       >
     </button>
@@ -19,7 +19,7 @@
     <transition name="fade">
       <div
         v-if="showDropdown"
-        class="absolute right-0 mt-2 w-72 max-w-xs sm:w-80 bg-white shadow border border-gray-200 rounded-lg z-50"
+        class="absolute right-10 mt-2 w-72 max-w-xs sm:w-80 bg-white shadow border border-gray-200 rounded-lg z-50"
       >
         <div
           class="flex items-center justify-between px-3 py-2 border-b border-gray-100"
@@ -62,7 +62,7 @@
               />
               <span
                 :class="[
-                  msg.read ? 'text-gray-400' : 'text-gray-800 font-medium',
+                  msg.read ? 'text-gray-400' : 'text-gray-700 font-medium',
                   'truncate',
                 ]"
                 >{{ msg.text }}</span
@@ -108,8 +108,6 @@ function onMessageClick(msg) {
 function markAllRead() {
   emit("mark-all-read");
 }
-
-// Optional: close dropdown on outside click
 function handleClickOutside(event) {
   if (!event.target.closest(".relative")) {
     showDropdown.value = false;
