@@ -1,34 +1,34 @@
 <template>
-  <div class="flex flex-row items-center justify-center px-4 py-8 min-h-screen">
+  <div class="min-h-screen flex items-center justify-center px-4 py-8 bg-white">
     <div
-      class="flex flex-row items-stretch bg-gray-50 rounded-lg w-full max-w-4xl"
+      class="flex flex-col md:flex-row items-stretch bg-gray-50 rounded-lg w-full max-w-4xl overflow-hidden"
     >
       <!-- Left: Image -->
       <div
-        class="py-8 px-8 rounded-xl flex flex-col gap-6 items-center w-full max-w-md"
+        class="py-8 px-4 sm:px-6 md:px-8 flex flex-col gap-4 items-center w-full md:w-1/2"
       >
-        <h1
-          class="text-2xl text-gray-700 font-bold flex items-center justify-center gap-2"
-        >
+        <h1 class="text-2xl text-gray-700 font-bold text-center">
           {{ t("Welcome Back!", "សូមស្វាគមន៍មកវិញ!") }}
         </h1>
         <img
           src="/images/log-in.png"
-          alt=""
-          class="w-full h-full object-contain"
+          alt="Login"
+          class="w-full max-w-xs max-h-48 md:max-h-full object-contain"
         />
       </div>
+
       <!-- Right: Form -->
-      <div class="py-8 px-8 rounded-xl flex flex-col gap-6 w-full max-w-md">
-        <h1
-          class="text-2xl text-gray-700 font-bold flex items-center justify-center gap-2"
-        >
+      <div
+        class="py-8 px-4 sm:px-6 md:px-8 flex flex-col gap-4 w-full md:w-1/2"
+      >
+        <h1 class="text-2xl text-gray-700 font-bold text-center">
           {{ t("Sign In", "ចូលគណនី") }}
         </h1>
-        <form class="flex flex-col gap-6" @submit.prevent="login">
+        <form class="flex flex-col gap-4" @submit.prevent="login">
+          <!-- Email -->
           <div class="flex flex-col gap-2">
             <label class="text-base text-gray-500" for="email">{{
-              t("Email", "អីម៉ែល")
+              t("Email", "អ៊ីមែល")
             }}</label>
             <div class="relative">
               <span
@@ -47,6 +47,8 @@
               />
             </div>
           </div>
+
+          <!-- Password -->
           <div class="flex flex-col gap-2">
             <label class="text-base text-gray-500" for="password">{{
               t("Password", "ពាក្យសម្ងាត់")
@@ -68,6 +70,8 @@
               />
             </div>
           </div>
+
+          <!-- Submit -->
           <button
             class="w-full bg-red-500 h-10 rounded hover:bg-red-600 text-white font-bold transition flex items-center justify-center gap-2 text-sm"
             :disabled="loading"
@@ -76,6 +80,8 @@
             <span v-if="!loading">{{ t("Login", "ចូល") }}</span>
             <span v-else>{{ t("Logging in...", "កំពុងចូល...") }}</span>
           </button>
+
+          <!-- Error Message -->
           <transition name="fade">
             <p
               v-if="error"
@@ -84,6 +90,8 @@
               {{ error }}
             </p>
           </transition>
+
+          <!-- Success Message -->
           <transition name="fade">
             <p
               v-if="success"
@@ -93,11 +101,12 @@
             </p>
           </transition>
         </form>
+
         <p class="text-center text-sm">
-          {{ t("Don't have an account?", "អំពីមិនមានគណនីមែន") }}
-          <NuxtLink to="/signup" class="text-blue-600 hover:underline">{{
-            t("Sign up now!", "ចូលស្វាគមន៍មកវិញ")
-          }}</NuxtLink>
+          {{ t("Don't have an account?", "អត់មានគណនីមែនទេ?") }}
+          <NuxtLink to="/signup" class="text-blue-600 hover:underline">
+            {{ t("Sign up now!", "ចុះឈ្មោះឥឡូវនេះ!") }}
+          </NuxtLink>
         </p>
       </div>
     </div>
@@ -112,9 +121,8 @@ import {
   faUser,
   faLock,
   faArrowRight,
-  faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { t, language } from "@/plugins/translate";
+import { t } from "@/plugins/translate";
 
 const email = ref("");
 const password = ref("");

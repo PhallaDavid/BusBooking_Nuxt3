@@ -190,10 +190,7 @@
                   />
                   <div class="ml-3 flex-1 flex items-center justify-between">
                     <span class="font-medium text-gray-800">ABA KHQR</span>
-                    <span
-                      class="bg-red-500 text-white text-xs px-2 py-1 rounded font-medium"
-                      >KHQR</span
-                    >
+                    <img src="/images/aba.jpg" class="w-10 h-10 rounded-full" alt="">
                   </div>
                 </label>
                 <!-- ACLEDA Bank -->
@@ -208,10 +205,7 @@
                   />
                   <div class="ml-3 flex-1 flex items-center justify-between">
                     <span class="font-medium text-gray-800">ACLEDA Bank</span>
-                    <span
-                      class="bg-green-500 text-white text-xs px-2 py-1 rounded font-medium"
-                      >-5</span
-                    >
+                    <img src="/images/ac.jpg" class="w-10 h-10 rounded-full" alt="">
                   </div>
                 </label>
               </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen flex items-center justify-center">
+  <div class="w-screen h-screen col:12 sm:12 md:4 flex items-center justify-center">
     <div class="w-[1230px] rounded-4xl h-[450px] bg-red-400 flex flex-col">
       <p class="font-bold text-white text-2xl pt-8 pl-8">
         {{ t("Enjoy the app!", "រីករាយជាមួយកម្មវិធី!") }}
@@ -27,7 +27,7 @@
               >
             </p>
           </div>
-          <div class="flex flex-row gap-4 items-center jutify-center">
+          <div class="flex flex-row gap-4 col:12 sm:12 md:4 items-center jutify-center">
             <div class="flex flex-col">
               <h1 class="text-xl font-bold">
                 45<font-awesome-icon :icon="['fas', 'star']" class="pl-2" />
@@ -67,7 +67,7 @@
           <img class="h-13 rounded-lg" src="/images/google.jpg" alt="" />
           <img class="h-13 rounded-lg" src="/images/apple.jpg" alt="" />
         </div>
-        <div class="flex-col flex pl-30 pt-10 gap-2">
+        <div class="flex-col flex col:12 sm:12 md:4 pl-30 pt-10 gap-2">
           <img
             class="h-[300px] w-full flex rounded-lg"
             src="/images/map.png"

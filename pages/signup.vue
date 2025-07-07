@@ -1,50 +1,45 @@
 <template>
-  <div class="flex flex-row items-center justify-center px-4 py-8 min-h-screen">
+  <div class="min-h-screen flex items-center justify-center px-4 py-8 bg-white">
     <div
-      class="flex flex-row items-stretch bg-gray-50 rounded-lg w-full max-w-4xl"
+      class="flex flex-col md:flex-row items-center bg-gray-50 rounded-lg w-full max-w-4xl  overflow-hidden"
     >
       <!-- Left: Image -->
       <div
-        class="py-8 px-8 rounded-xl flex flex-col gap-6 items-center w-full max-w-md"
+        class="py-8 px-4 sm:px-6 md:px-8 flex flex-col gap-4 items-center w-full md:w-1/2 max-w-md mb-6 md:mb-0"
       >
-        <h1
-          class="text-2xl text-gray-700 font-bold flex items-center justify-center gap-2"
-        >
-          {{ t("Join Us!", "ចុះឈ្មោះ") }}
+        <h1 class="text-2xl text-gray-700 font-bold text-center flex items-center justify-center gap-2">
+          {{ t("Join Us!", "ចូលរួមជាមួយយើង") }}
         </h1>
         <img
           src="/images/log-in.png"
-          alt=""
-          class="w-full h-full object-contain"
+          alt="Join Us"
+          class="w-full max-w-xs max-h-48 md:max-h-full object-contain"
         />
       </div>
       <!-- Right: Form -->
-      <div class="py-8 px-8 rounded-xl flex flex-col gap-6 w-full max-w-md">
+      <div
+         class="py-8 px-4 sm:px-6 md:px-8 flex flex-col gap-4 w-full md:w-1/2"
+      >
         <h1
-          class="text-2xl text-gray-700 font-bold flex items-center justify-center gap-2"
+          class="text-2xl text-gray-700 font-bold flex items-center justify-center gap-2 mb-4"
         >
-          <font-awesome-icon
-            :icon="faRightToBracket"
-            class="text-red-500 w-6 h-6"
-          />
+          <font-awesome-icon :icon="faRightToBracket" class="text-red-500 w-6 h-6" />
           {{ t("Sign Up", "ចុះឈ្មោះ") }}
         </h1>
-        <form class="flex flex-col gap-6" @submit.prevent="register">
+        <form class="flex flex-col gap-4" @submit.prevent="register">
+          <!-- Name -->
           <div class="flex flex-col gap-2">
-            <label class="text-lg text-gray-500" for="name">{{
-              t("Name", "ឈ្មោះ")
-            }}</label>
+            <label class="text-base text-gray-500" for="name">{{ t("Name", "ឈ្មោះ") }}</label>
             <div class="relative">
               <span
                 class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               >
                 <font-awesome-icon :icon="faUser" class="w-5 h-5" />
-                <i class="sc-bwzfXH iZnIzQ icon icon-src"></i>
               </span>
               <input
                 id="name"
                 v-model="name"
-                class="bg-gray-100 text-gray-700 h-10 w-full rounded border border-transparent focus:border-red-500 focus:ring-1 focus:ring-red-300 px-10 transition"
+                class="bg-gray-100 text-gray-700 h-10 w-full rounded border border-transparent focus:border-red-500 focus:ring-1 focus:ring-red-300 px-10 transition text-sm"
                 type="text"
                 placeholder="Enter Your Name"
                 autocomplete="username"
@@ -52,10 +47,9 @@
               />
             </div>
           </div>
+          <!-- Email -->
           <div class="flex flex-col gap-2">
-            <label class="text-lg text-gray-500" for="email">{{
-              t("Email", "អ៊ីម៉ែល")
-            }}</label>
+            <label class="text-base text-gray-500" for="email">{{ t("Email", "អ៊ីមែល") }}</label>
             <div class="relative">
               <span
                 class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -73,10 +67,9 @@
               />
             </div>
           </div>
+          <!-- Password -->
           <div class="flex flex-col gap-2">
-            <label class="text-lg text-gray-500" for="password">{{
-              t("Password", "ពាក្យសម្ងាត់")
-            }}</label>
+            <label class="text-base text-gray-500" for="password">{{ t("Password", "ពាក្យសម្ងាត់") }}</label>
             <div class="relative">
               <span
                 class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -94,10 +87,11 @@
               />
             </div>
           </div>
+          <!-- Confirm Password -->
           <div class="flex flex-col gap-2">
-            <label class="text-lg text-gray-500" for="password_confirmation">{{
-              t("Confirm Password", "បញ្ជាក់ពាក្យសម្ងាត់")
-            }}</label>
+            <label class="text-base text-gray-500" for="password_confirmation">
+              {{ t("Confirm Password", "បញ្ជាក់ពាក្យសម្ងាត់") }}
+            </label>
             <div class="relative">
               <span
                 class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -115,22 +109,25 @@
               />
             </div>
           </div>
+          <!-- Submit -->
           <button
             class="w-full bg-red-500 h-10 rounded hover:bg-red-600 text-white font-bold transition flex items-center justify-center gap-2"
             :disabled="loading"
           >
             <font-awesome-icon :icon="faArrowRight" class="w-5 h-5" />
             <span v-if="!loading">{{ t("Sign Up", "ចុះឈ្មោះ") }}</span>
-            <span v-else>{{ t("Registering...", "ក្មេងក្មេង...") }}</span>
+            <span v-else>{{ t("Registering...", "កំពុងចុះឈ្មោះ...") }}</span>
           </button>
+          <!-- Error Message -->
           <p v-if="error" class="text-red-500 text-center">{{ error }}</p>
+          <!-- Success Message -->
           <p v-if="success" class="text-green-600 text-center">{{ success }}</p>
         </form>
-        <p class="text-center">
-          {{ t("Already have an account?", "មានអតិថិជនទេ?") }}
-          <NuxtLink to="/signin" class="text-blue-600 hover:underline">{{
-            t("Sign in now!", "ចុះឈ្មោះឥឡូវនេះ!")
-          }}</NuxtLink>
+        <p class="text-center text-sm mt-4">
+          {{ t("Already have an account?", "មានគណនីរួចហើយ?") }}
+          <NuxtLink to="/signin" class="text-blue-600 hover:underline">
+            {{ t("Sign in now!", "ចូលឥឡូវនេះ!") }}
+          </NuxtLink>
         </p>
       </div>
     </div>
@@ -147,7 +144,7 @@ import {
   faArrowRight,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { t, language } from "@/plugins/translate";
+import { t } from "@/plugins/translate";
 
 const name = ref("");
 const email = ref("");
